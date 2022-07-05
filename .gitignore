@@ -8,3 +8,7 @@ __pycache__/
 # by ichux
 .DS_Store
 .coverage
+
+
+dist/
+distinctid.egg-info/
