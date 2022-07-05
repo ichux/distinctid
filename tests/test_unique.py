@@ -1,6 +1,6 @@
 import unittest
 
-import uniqueid
+import distinctid
 
 
 class SimulateDistinctRun(object):
@@ -19,9 +19,9 @@ class TestDistinct(unittest.TestCase):
         self.shard_id = 1
 
     def test_distinct_state(self):
-        sdr = SimulateDistinctRun(uniqueid.distinct, self.state)
-        assert sdr.result == uniqueid.distinct(self.state)
+        sdr = SimulateDistinctRun(distinctid.distinct, self.state)
+        assert sdr.result == distinctid.distinct(self.state)
 
     def test_distinct_state_and_shard_id(self):
-        sdr = SimulateDistinctRun(uniqueid.distinct, self.state, self.shard_id)
-        assert sdr.result == uniqueid.distinct(self.state, self.shard_id)
+        sdr = SimulateDistinctRun(distinctid.distinct, self.state, self.shard_id)
+        assert sdr.result == distinctid.distinct(self.state, self.shard_id)
