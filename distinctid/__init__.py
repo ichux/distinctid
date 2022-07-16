@@ -6,7 +6,7 @@ from datetime import date
 __author__ = "Chukwudi Nwachukwu"
 version = "1.0.0"
 
-URL = "https://github.com/ichux/uniqueid"
+URL = "https://github.com/ichux/distinctid"
 
 
 PATTERN = f"{date.today().year}-01-01 00:00:00"
