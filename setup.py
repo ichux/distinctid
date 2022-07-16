@@ -13,6 +13,6 @@ setuptools.setup(
     author=distinctid.__author__,
     author_email="theichux@gmail.com",
     license="MIT",
-    python_requires=">=3.10",
+    python_requires=">=3",
     packages=["distinctid"],
 )
