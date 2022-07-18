@@ -10,7 +10,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     keywords="unique distinct id uuid sort",
     url=distinctid.URL,
-    download_url="https://github.com/ichux/distinctid/archive/refs/tags/v1.0.0.tar.gz",
+    download_url="https://github.com/ichux/distinctid/archive/refs/tags/v1.0.1.tar.gz",
     author=distinctid.__author__,
     author_email="theichux@gmail.com",
     license="MIT",
