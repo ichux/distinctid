@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+  diid:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: distinctid
+    restart: always
+    container_name: cuid
+    command: daemon
+    environment:
+      SHARD_ID: $SHARD_ID
+      GUNICORN_WORKERS: $GUNICORN_WORKERS
+    volumes:
+      - ./sf:/srcfiles
+    ports:
+    - $REDIS_IP:6379
+    - $SUPERVISOR_IP:9001
+    - $WEB_IP:8000

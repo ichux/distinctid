@@ -5,10 +5,13 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# by ichux
+.env
+
 .DS_Store
 .coverage
 
+supervisord.log
+supervisord.pid
 
 dist/
 distinctid.egg-info/
