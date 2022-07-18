@@ -4,7 +4,7 @@ import time
 from datetime import date
 
 __author__ = "Chukwudi Nwachukwu"
-version = "1.0.0"
+version = "1.0.1"
 
 URL = "https://github.com/ichux/distinctid"
 
