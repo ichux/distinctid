@@ -21,3 +21,9 @@ coverage run -m unittest discover \
 
 # browse: htmlcov/index.html 
 ```
+
+# How to Use
+```bash
+# Browse a short video:
+https://twitter.com/zuoike/status/1544337418467397633
+```
