@@ -21,14 +21,4 @@ curl 127.0.0.1:18080 && echo
 curl 127.0.0.1:18080 && echo
 curl 127.0.0.1:18080 && echo
 EOF
-
-# https://scoutapm.com/blog/how-to-use-docker-healthcheck
-
-# docker network create nc_network
-# networks:
-#   default:
-#     name: nc_network
-
-# networks:
-#   gateway: {}
 ```
