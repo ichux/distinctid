@@ -11,10 +11,10 @@ WORKDIR /srcfiles
 
 RUN mv supervisord.conf /etc/supervisor/conf.d && \
     mv redis.conf /etc/redis \
-    && chmod +x entrypoint.sh && mv entrypoint.sh /bin \
-    && chmod +x webapp.sh && mv webapp.sh /bin \
-    && mv scale.py /bin
+    && chmod +x bootup.sh && mv bootup.sh /bin \
+    && chmod +x starlette.sh && mv starlette.sh /bin \
+    && mv to_json.py /bin && mv to_text.py /bin
 
 EXPOSE 8000 6379 9001
 
-ENTRYPOINT ["sh", "/bin/entrypoint.sh"]
+ENTRYPOINT ["sh", "/bin/bootup.sh"]

@@ -14,7 +14,7 @@ async def index(request):
     return JSONResponse(
         {
             "i": distinct(
-                redis.StrictRedis(**subst).incr("diid"),
+                redis.StrictRedis(**subst).incr("distinctid"),
                 int(os.getenv("SHARD_ID")),
             )
         }
