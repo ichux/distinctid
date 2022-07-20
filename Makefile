@@ -1,7 +1,7 @@
 # Do not remove this block. It is used by the 'help' rule when
 # constructing the help output.
 # help:
-# help: UniqueID help
+# help: DistinctID help
 # help:
 
 .PHONY: help
