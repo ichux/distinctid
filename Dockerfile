@@ -15,6 +15,6 @@ RUN mv supervisord.conf /etc/supervisor/conf.d && \
     && chmod +x starlette.sh && mv starlette.sh /bin \
     && mv diid.py /bin
 
-EXPOSE 8000 6379 9001
+EXPOSE 8000 9001
 
 ENTRYPOINT ["sh", "/bin/bootup.sh"]
