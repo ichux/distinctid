@@ -18,17 +18,17 @@ build:
 .PHONY: log
 # help: log 				- Container logs
 log:
-	@docker logs --follow cuid
+	@docker logs --follow c_diid
 
 .PHONY: sh
 # help: sh 				- sh for the container
 sh:
-	@docker exec -it cuid sh
+	@docker exec -it c_diid sh
 
 .PHONY: nid
 # help: nid 				- next id
 nid:
-	@docker exec -it cuid python3 -c \
+	@docker exec -it c_diid python3 -c \
 	'import redis; print(\
 	redis.StrictRedis(host="localhost", port=6379, db=0).incr("diid")\
 	)'
