@@ -22,4 +22,3 @@ exec gunicorn diid:app \
 	--worker-class $GUNICORN_WORKERS \
 	-k diid.DistinctIDUvicornWorker \
 	--bind 0.0.0.0:8000
---no-server-header
