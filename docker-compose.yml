@@ -12,7 +12,6 @@ services:
     environment:
       SHARD_ID: $SHARD_ID
       GUNICORN_WORKERS: $GUNICORN_WORKERS
-      JSON_RESPONSE: $JSON_RESPONSE
     ports:
     - $SUPERVISOR_IP:9001
     - $WEB_IP:8000
