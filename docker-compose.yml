@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     image: distinctid
     restart: always
-    container_name: cuid
+    container_name: c_diid
     command: daemon
     environment:
       SHARD_ID: $SHARD_ID
