@@ -13,7 +13,7 @@ RUN mv supervisord.conf /etc/supervisor/conf.d && \
     mv redis.conf /etc/redis \
     && chmod +x bootup.sh && mv bootup.sh /bin \
     && chmod +x starlette.sh && mv starlette.sh /bin \
-    && mv to_json.py /bin && mv to_text.py /bin
+    && mv diid.py /bin
 
 EXPOSE 8000 6379 9001
 

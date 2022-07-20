@@ -13,9 +13,8 @@ services:
       SHARD_ID: $SHARD_ID
       GUNICORN_WORKERS: $GUNICORN_WORKERS
       JSON_RESPONSE: $JSON_RESPONSE
-    volumes:
-      - ./sf:/srcfiles
+    # volumes:
+    #   - ./sf:/srcfiles
     ports:
-    - $REDIS_IP:6379
     - $SUPERVISOR_IP:9001
     - $WEB_IP:8000
