@@ -13,5 +13,8 @@ __pycache__/
 supervisord.log
 supervisord.pid
 
+collate.txt
+1s.txt
+
 dist/
 distinctid.egg-info/

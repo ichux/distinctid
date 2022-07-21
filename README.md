@@ -33,8 +33,37 @@ make build
 # Run 100 calls!
 # Where 18080 is 'WEB_IP' as found in .env
 eval "
-$(cat <<EOF                                       
+$(cat <<EOF
 for i in {1..100}; do echo 'curl -s 127.0.0.1:18080'; done
 EOF
 )" | xargs -P 20 -I {} sh -c 'printf "`$1`\n"' - {}
+```
+
+# Generate and Test
+```bash
+# Tab 1
+prime(){
+    rm -f collate.txt && touch collate.txt
+
+    # https://forum.linuxconfig.org/t/how-to-calculate-dynamic-difference-of-total-lines-number/6829
+    PAST=$(wc -l collate.txt | awk '{print $1}');
+
+    while true;
+    do
+        PC=$(wc -l collate.txt | awk '{print $1}');
+        echo $(($PC-$PAST)); PAST=$PC; sleep 1;
+    done
+}
+
+prime
+
+# Tab 2
+eval "
+$(cat <<EOF
+for i in {1..10000}; do echo 'curl -s 127.0.0.1:18080'; done
+EOF
+)" | xargs -P 500 -I {} sh -c 'printf "`$1`\n"' - {} > collate.txt && echo -e "\ndone\n"
+
+# Tab 3
+cat collate.txt | uniq -c | awk '{print $1}'
 ```
