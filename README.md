@@ -44,12 +44,12 @@ EOF
 # Tab 1
 prime(){
     rm -f collate.txt && touch collate.txt
-    PAST=$(wc -l collate.txt | awk '{print $1}');
+    PAST=$(wc -l collate.txt | awk '{print $1}')
 
     while true;
     do
-        PC=$(wc -l collate.txt | awk '{print $1}');
-        echo $(($PC-$PAST)); PAST=$PC; sleep 1;
+        PC=$(wc -l collate.txt | awk '{print $1}'); echo "$(($PC-$PAST))"; PAST=$PC
+        sleep 1
     done
 }
 
