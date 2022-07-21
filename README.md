@@ -44,8 +44,6 @@ EOF
 # Tab 1
 prime(){
     rm -f collate.txt && touch collate.txt
-
-    # https://forum.linuxconfig.org/t/how-to-calculate-dynamic-difference-of-total-lines-number/6829
     PAST=$(wc -l collate.txt | awk '{print $1}');
 
     while true;
