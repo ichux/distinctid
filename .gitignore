@@ -14,9 +14,11 @@ supervisord.log
 supervisord.pid
 
 collate.txt
-1s.txt
-requests.png
 graph_data.txt
+
+1s.txt
+bars.png
+points.png
 
 dist/
 distinctid.egg-info/

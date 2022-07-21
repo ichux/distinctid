@@ -2,12 +2,11 @@ import random
 import re
 
 # pip install matplotlib
-import matplotlib.pyplot as plot
+import matplotlib.pyplot as plt
 
 requests, hits, colors = [], [], []
 
 numbers = re.findall(r"\d\d+", open("graph_data.txt", "r").read())
-
 
 try:
     for rst, ts in enumerate(numbers, 1):
@@ -20,12 +19,12 @@ try:
             )
         )
 
-    plot.barh(requests, hits, color=colors)
+    plt.barh(requests, hits, color=colors)
 
-    plot.title("Distinct ID")
-    plot.xlabel("Hits per second", fontsize=14)
-    plot.ylabel("Requests", fontsize=14)
+    plt.title("Distinct ID")
+    plt.xlabel("Hits per second", fontsize=14)
+    plt.ylabel("Requests", fontsize=14)
 
-    plot.savefig("requests.png")
+    plt.savefig("bars.png")
 except FileNotFoundError:
     print("graph_data.txt is missing")
