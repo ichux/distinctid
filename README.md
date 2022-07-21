@@ -51,9 +51,7 @@ prime(){
         PC=$(wc -l collate.txt | awk '{print $1}'); echo "$(($PC-$PAST))"; PAST=$PC
         sleep 1
     done
-}
-
-prime
+} && prime
 
 # Tab 2
 eval "
