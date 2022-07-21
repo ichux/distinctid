@@ -62,8 +62,7 @@ eval "
 $(cat <<EOF
 for i in {1..10000}; do echo 'curl -s 127.0.0.1:18080'; done
 EOF
-)" | xargs -P 500 -I {} sh -c 'printf "`$1`\n"' - {} > collate.txt && echo -e "\ndone\n"
-
-# Tab 3
-cat collate.txt | uniq -c | awk '{print $1}'
+)" | xargs -P 500 -I {} sh -c 'printf "`$1`\n"' - {} > collate.txt && \
+    cat collate.txt | uniq -c | awk '{print $1}' \
+    && echo -e "\ndone\n"
 ```
