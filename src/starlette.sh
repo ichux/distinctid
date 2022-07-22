@@ -2,23 +2,17 @@
 
 cd /bin
 
-# echo -e "\nJSON_RESPONSE = $JSON_RESPONSE\n"
+if [ ! $SCALE_WORKERS ]; then
+	SCALE_WORKERS=2
+else
+	if [ $SCALE_WORKERS -gt 5 ]; then
+		SCALE_WORKERS=5
+	fi
+fi
 
-# if [[ $JSON_RESPONSE == "true" ]]; then
-# 	exec gunicorn diid:app --workers $GUNICORN_WORKERS \
-# 		-k uvicorn.workers.UvicornWorker \
-# 		--bind 0.0.0.0:8000
-# fi
-
-# if [[ $JSON_RESPONSE == "false" ]]; then
-# 	exec gunicorn diid:app --workers $GUNICORN_WORKERS \
-# 		-k uvicorn.workers.UvicornWorker \
-# 		--bind 0.0.0.0:8000
-# fi
-
-# echo "options: 'true' or 'false'" && exit
+echo -e "\nSCALE_WORKERS == $SCALE_WORKERS\nNPROC         == `nproc`\n"
 
 exec gunicorn diid:app \
-	--workers `nproc` \
+	--workers $(($SCALE_WORKERS * `nproc`)) \
 	--worker-class diid.DistinctIDUvicornWorker \
 	--bind 0.0.0.0:8000

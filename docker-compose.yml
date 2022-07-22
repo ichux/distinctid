@@ -11,6 +11,7 @@ services:
     command: daemon
     environment:
       SHARD_ID: $SHARD_ID
+      SCALE_WORKERS: $SCALE_WORKERS
     ports:
     - $SUPERVISOR_IP:9001
     - $WEB_IP:8000
