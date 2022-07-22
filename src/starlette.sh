@@ -19,5 +19,5 @@ cd /bin
 # echo "options: 'true' or 'false'" && exit
 exec gunicorn diid:app \
 	--workers `nproc` \
-	-k diid.DistinctIDUvicornWorker \
+	--worker-class diid.DistinctIDUvicornWorker \
 	--bind 0.0.0.0:8000
