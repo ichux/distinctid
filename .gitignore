@@ -20,5 +20,7 @@ graph_data.txt
 bars.png
 points.png
 
+gunicorn.sock
+
 dist/
 distinctid.egg-info/

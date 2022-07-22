@@ -6,3 +6,4 @@ Makefile
 README.md
 
 .git/
+gunicorn.sock

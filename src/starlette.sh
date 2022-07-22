@@ -15,4 +15,5 @@ echo -e "\nSCALE_WORKERS == $SCALE_WORKERS\nNPROC         == `nproc`\n"
 exec gunicorn diid:app \
 	--workers $(($SCALE_WORKERS * `nproc`)) \
 	--worker-class diid.DistinctIDUvicornWorker \
+	--bind unix:/bin/gunicorn.sock \
 	--bind 0.0.0.0:8000

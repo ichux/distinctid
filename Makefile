@@ -32,3 +32,15 @@ nid:
 	'import redis; print(\
 	redis.StrictRedis(host="localhost", port=6379, db=0).incr("diid")\
 	)'
+
+.PHONY: ms
+# help: ms 				- make a sock
+ms:
+	@python3 -c "import socket as s, os; \
+	sock = s.socket(s.AF_UNIX); sock.bind('gunicorn.sock'); \
+	os.chmod('gunicorn.sock', 0o777)"
+
+.PHONY: sock
+# help: sock 				- cp a sock
+sock:
+	@docker cp c_diid:/bin/gunicorn.sock gunicorn.sock
