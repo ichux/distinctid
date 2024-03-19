@@ -20,3 +20,6 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/ichux/distinctid"
 Issues = "https://github.com/ichux/distinctid/issues"
+
+[pypi]
+username = __token__

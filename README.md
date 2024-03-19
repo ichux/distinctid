@@ -23,6 +23,8 @@ coverage run -m unittest discover \
 ```
 
 # How to Compile
+```bash
 pip install build twine
 python3 -m build
 python3 -m twine upload --repository distinctid dist/*
+```
