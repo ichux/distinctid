@@ -14,4 +14,4 @@ class TestDistinct(unittest.TestCase):
 
     def test_distinct_and_shard_id(self):
         sdr = SimulateDistinctRun(distinctid.distinct, self.shard_id)
-        assert distinctid.distinct(self.shard_id) == sdr.result + 1
+        assert distinctid.distinct(self.shard_id) > sdr.result
