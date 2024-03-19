@@ -22,43 +22,7 @@ coverage run -m unittest discover \
 # browse: htmlcov/index.html 
 ```
 
-# How to Use
-```bash
-# Browse a short video:
-# https://twitter.com/zuoike/status/1544337418467397633
-
-cp example.env .env # && gsed -i 's/JSON_RESPONSE.*/JSON_RESPONSE\=true/' .env
-make build
-
-# Run 100 calls!
-# Where 18080 is 'WEB_IP' as found in .env
-eval "
-$(cat <<EOF
-for i in {1..100}; do echo 'curl -s 127.0.0.1:18080'; done
-EOF
-)" | xargs -P 20 -I {} sh -c 'printf "`$1`\n"' - {}
-```
-
-# Generate and Test
-```bash
-# Tab 1
-prime(){
-    rm -f collate.txt && touch collate.txt
-    PAST=$(wc -l collate.txt | awk '{print $1}')
-
-    while true;
-    do
-        PC=$(wc -l collate.txt | awk '{print $1}'); echo "$(($PC-$PAST))"; PAST=$PC
-        sleep 1
-    done
-} && prime
-
-# Tab 2
-eval "
-$(cat <<EOF
-for i in {1..10000}; do echo 'curl -s 127.0.0.1:18080'; done
-EOF
-)" | xargs -P 500 -I {} sh -c 'printf "`$1`\n"' - {} > collate.txt && \
-    cat collate.txt | uniq -c | awk '{print $1}' \
-    && echo -e "\ndone\n"
-```
+# How to Compile
+pip install build twine
+python3 -m build
+python3 -m twine upload --repository distinctid dist/*
