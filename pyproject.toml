@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "distinctid"
-version = "1.0.2"
+version = "1.0.4"
 authors = [
   { name="Chukwudi Nwachukwu", email="chukwudi.nwachukwu@pitchcardinal.com" },
 ]
@@ -20,6 +20,3 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/ichux/distinctid"
 Issues = "https://github.com/ichux/distinctid/issues"
-
-[pypi]
-username = __token__

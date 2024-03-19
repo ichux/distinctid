@@ -26,5 +26,11 @@ coverage run -m unittest discover \
 ```bash
 pip install build twine
 python3 -m build
+
+# add the below line to pyproject.toml to upload, but it has to be removed for the build to work
+[pypi]
+username = __token__
+
+# upload
 python3 -m twine upload --repository distinctid dist/*
 ```
