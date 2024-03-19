@@ -25,4 +25,4 @@ gunicorn.sock
 dist/
 distinctid.egg-info/
 
-.file.oasis.bin
+*.bin

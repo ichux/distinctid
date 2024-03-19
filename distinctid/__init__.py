@@ -17,7 +17,7 @@ CURRENT_OF_EPOCH_YEAR = calendar.timegm(CURRENT_YEAR) * 1000
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-OASIS_FILE = BASE_DIR / ".file.oasis.bin"
+OASIS_FILE = BASE_DIR / ".distinctid.bin"
 
 # create non-existing file
 Path(OASIS_FILE).touch()
