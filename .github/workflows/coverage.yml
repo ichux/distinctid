@@ -1,4 +1,3 @@
-
 name: Run Coverage
 on: [push]
 
@@ -6,19 +5,39 @@ jobs:
   code_checks:
     runs-on: ubuntu-latest
 
+    services:
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
     strategy:
       matrix:
         python-version:
-          - 3
+          - "3.10"
+          - "3.11"
+          - "3.12"
 
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-python@v1
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: "Install libraries"
+      - name: "Upgrade pip and install build tools"
         run: pip install -U pip setuptools wheel coverage
-        
-      - name: "Run test through Coverage"
+
+      - name: "Install package with dependencies"
+        run: pip install -e ".[asyncio]"
+
+      - name: "Run tests with coverage"
         run: coverage run -m unittest discover && coverage report
+
+      - name: "Check minimum coverage threshold"
+        run: coverage report --fail-under=85
