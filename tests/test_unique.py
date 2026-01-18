@@ -1,4 +1,3 @@
-import asyncio
 import unittest
 from unittest import mock
 
@@ -8,7 +7,7 @@ import distinctid
 class TestDistinct(unittest.TestCase):
     def setUp(self) -> None:
         self.shard_id = 1
-        self.test_redis_key = 'distinctid:test:counter'
+        self.test_redis_key = "distinctid:test:counter"
 
         # Disable buffering for standard tests
         distinctid.disable_buffering()
@@ -57,7 +56,7 @@ class TestDistinct(unittest.TestCase):
 class TestDistinctBatch(unittest.TestCase):
     def setUp(self) -> None:
         self.shard_id = 1
-        self.test_redis_key = 'distinctid:test:batch:counter'
+        self.test_redis_key = "distinctid:test:batch:counter"
 
         # Clean up test key
         try:
@@ -108,7 +107,7 @@ class TestDistinctBatch(unittest.TestCase):
 class TestBuffering(unittest.TestCase):
     def setUp(self) -> None:
         self.shard_id = 1
-        self.test_redis_key = 'distinctid:test:buffer:counter'
+        self.test_redis_key = "distinctid:test:buffer:counter"
 
         # Disable buffering initially
         distinctid.disable_buffering()
@@ -125,7 +124,9 @@ class TestBuffering(unittest.TestCase):
         distinctid.enable_buffering(buffer_size=100)
 
         # Generate IDs with buffering
-        ids = [distinctid.distinct(self.shard_id, self.test_redis_key) for _ in range(50)]
+        ids = [
+            distinctid.distinct(self.shard_id, self.test_redis_key) for _ in range(50)
+        ]
 
         self.assertEqual(len(ids), 50)
         self.assertEqual(len(set(ids)), 50)  # All unique
@@ -150,10 +151,7 @@ class TestConfiguration(unittest.TestCase):
     def test_configure_redis(self):
         """Test Redis configuration."""
         distinctid.configure_redis(
-            host='localhost',
-            port=6379,
-            db=0,
-            max_connections=10
+            host="localhost", port=6379, db=0, max_connections=10
         )
         # Should not raise exception
         client = distinctid._get_redis_client()
@@ -161,11 +159,14 @@ class TestConfiguration(unittest.TestCase):
 
     def test_environment_variables(self):
         """Test environment variable configuration."""
-        with mock.patch.dict('os.environ', {
-            'DISTINCTID_REDIS_HOST': 'testhost',
-            'DISTINCTID_REDIS_PORT': '6380',
-            'DISTINCTID_REDIS_DB': '2'
-        }):
+        with mock.patch.dict(
+            "os.environ",
+            {
+                "DISTINCTID_REDIS_HOST": "testhost",
+                "DISTINCTID_REDIS_PORT": "6380",
+                "DISTINCTID_REDIS_DB": "2",
+            },
+        ):
             # Reset client to force re-initialization
             distinctid._redis_client = None
 
@@ -199,7 +200,7 @@ class TestMetrics(unittest.TestCase):
 class TestAsync(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self) -> None:
         self.shard_id = 1
-        self.test_redis_key = 'distinctid:test:async:counter'
+        self.test_redis_key = "distinctid:test:async:counter"
 
         # Reset async client to avoid event loop conflicts
         distinctid._async_redis_client = None
@@ -235,7 +236,9 @@ class TestAsync(unittest.IsolatedAsyncioTestCase):
         """Test async batch generation."""
         try:
             count = 100
-            ids = await distinctid.distinct_batch_async(count, self.shard_id, self.test_redis_key)
+            ids = await distinctid.distinct_batch_async(
+                count, self.shard_id, self.test_redis_key
+            )
 
             self.assertEqual(len(ids), count)
             self.assertEqual(len(set(ids)), count)  # All unique
@@ -251,7 +254,9 @@ class TestAsync(unittest.IsolatedAsyncioTestCase):
 
             # Invalid batch count
             with self.assertRaises(ValueError):
-                await distinctid.distinct_batch_async(0, self.shard_id, self.test_redis_key)
+                await distinctid.distinct_batch_async(
+                    0, self.shard_id, self.test_redis_key
+                )
         except ImportError:
             self.skipTest("redis[asyncio] not installed")
 
@@ -271,11 +276,14 @@ class TestEpochCaching(unittest.TestCase):
         epoch1 = distinctid._get_epoch_base()
 
         # Mock date.today() to return next year
-        with mock.patch('distinctid.date') as mock_date:
+        with mock.patch("distinctid.date") as mock_date:
             mock_date.today.return_value.year = 2027
             from datetime import datetime as dt
-            with mock.patch('distinctid.datetime') as mock_datetime:
-                mock_datetime.return_value.timestamp.return_value = dt(2027, 1, 1).timestamp()
+
+            with mock.patch("distinctid.datetime") as mock_datetime:
+                mock_datetime.return_value.timestamp.return_value = dt(
+                    2027, 1, 1
+                ).timestamp()
                 mock_datetime.side_effect = lambda *args, **kw: dt(*args, **kw)
 
                 epoch2 = distinctid._get_epoch_base()
@@ -284,5 +292,5 @@ class TestEpochCaching(unittest.TestCase):
                 self.assertNotEqual(epoch1, epoch2)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

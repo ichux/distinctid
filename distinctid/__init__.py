@@ -107,11 +107,11 @@ def _get_redis_client() -> redis.Redis:
     global _redis_client
     if _redis_client is None:
         _redis_client = redis.Redis(
-            host=os.getenv('DISTINCTID_REDIS_HOST', 'localhost'),
-            port=int(os.getenv('DISTINCTID_REDIS_PORT', '6379')),
-            db=int(os.getenv('DISTINCTID_REDIS_DB', '0')),
-            password=os.getenv('DISTINCTID_REDIS_PASSWORD'),
-            decode_responses=False
+            host=os.getenv("DISTINCTID_REDIS_HOST", "localhost"),
+            port=int(os.getenv("DISTINCTID_REDIS_PORT", "6379")),
+            db=int(os.getenv("DISTINCTID_REDIS_DB", "0")),
+            password=os.getenv("DISTINCTID_REDIS_PASSWORD"),
+            decode_responses=False,
         )
         logger.debug("Redis client initialized from environment variables")
     return _redis_client
@@ -135,11 +135,11 @@ def _get_async_redis_client():
             )
 
         _async_redis_client = aioredis.Redis(
-            host=os.getenv('DISTINCTID_REDIS_HOST', 'localhost'),
-            port=int(os.getenv('DISTINCTID_REDIS_PORT', '6379')),
-            db=int(os.getenv('DISTINCTID_REDIS_DB', '0')),
-            password=os.getenv('DISTINCTID_REDIS_PASSWORD'),
-            decode_responses=False
+            host=os.getenv("DISTINCTID_REDIS_HOST", "localhost"),
+            port=int(os.getenv("DISTINCTID_REDIS_PORT", "6379")),
+            db=int(os.getenv("DISTINCTID_REDIS_DB", "0")),
+            password=os.getenv("DISTINCTID_REDIS_PASSWORD"),
+            decode_responses=False,
         )
         logger.debug("Async Redis client initialized")
     return _async_redis_client
@@ -178,7 +178,7 @@ def enable_metrics(enabled: bool = True) -> None:
 
 
 def configure_redis(
-    host: str = 'localhost',
+    host: str = "localhost",
     port: int = 6379,
     db: int = 0,
     password: Optional[str] = None,
@@ -186,7 +186,7 @@ def configure_redis(
     socket_timeout: float = 5.0,
     socket_connect_timeout: float = 5.0,
     retry_on_timeout: bool = True,
-    **kwargs
+    **kwargs,
 ) -> None:
     """
     Configure Redis connection with connection pooling.
@@ -213,7 +213,7 @@ def configure_redis(
         socket_timeout=socket_timeout,
         socket_connect_timeout=socket_connect_timeout,
         retry_on_timeout=retry_on_timeout,
-        **kwargs
+        **kwargs,
     )
 
     _redis_client = redis.Redis(connection_pool=pool, decode_responses=False)
@@ -225,7 +225,7 @@ def configure_redis_sentinel(
     service_name: str,
     password: Optional[str] = None,
     sentinel_kwargs: Optional[dict] = None,
-    **kwargs
+    **kwargs,
 ) -> None:
     """
     Configure Redis connection using Sentinel for high availability.
@@ -244,10 +244,10 @@ def configure_redis_sentinel(
 
     _redis_client = sentinel.master_for(
         service_name,
-        socket_timeout=kwargs.get('socket_timeout', 0.1),
+        socket_timeout=kwargs.get("socket_timeout", 0.1),
         password=password,
         decode_responses=False,
-        **kwargs
+        **kwargs,
     )
     logger.info(f"Redis Sentinel configured for service: {service_name}")
 
@@ -290,7 +290,7 @@ def _validate_shard_id(shard_id: int) -> None:
         raise ValueError(f"shard_id must be 0-8191, got {shard_id}")
 
 
-def distinct(shard_id: int = 1, redis_key: str = 'distinctid:counter') -> int:
+def distinct(shard_id: int = 1, redis_key: str = "distinctid:counter") -> int:
     """
     Generate a unique, sortable 64-bit integer ID.
 
@@ -342,9 +342,7 @@ def distinct(shard_id: int = 1, redis_key: str = 'distinctid:counter') -> int:
 
 
 def distinct_batch(
-    count: int,
-    shard_id: int = 1,
-    redis_key: str = 'distinctid:counter'
+    count: int, shard_id: int = 1, redis_key: str = "distinctid:counter"
 ) -> list[int]:
     """
     Generate multiple unique IDs efficiently using single Redis operation.
@@ -388,15 +386,11 @@ def distinct_batch(
     epoch_base = _get_epoch_base()
     result = (epoch - epoch_base) << 23
 
-    return [
-        (result | (shard_id << 10)) | ((start_id + i) % 1024)
-        for i in range(count)
-    ]
+    return [(result | (shard_id << 10)) | ((start_id + i) % 1024) for i in range(count)]
 
 
 async def distinct_async(
-    shard_id: int = 1,
-    redis_key: str = 'distinctid:counter'
+    shard_id: int = 1, redis_key: str = "distinctid:counter"
 ) -> int:
     """
     Generate a unique ID asynchronously for asyncio applications.
@@ -438,9 +432,7 @@ async def distinct_async(
 
 
 async def distinct_batch_async(
-    count: int,
-    shard_id: int = 1,
-    redis_key: str = 'distinctid:counter'
+    count: int, shard_id: int = 1, redis_key: str = "distinctid:counter"
 ) -> list[int]:
     """
     Generate multiple unique IDs asynchronously.
@@ -482,7 +474,4 @@ async def distinct_batch_async(
     epoch_base = _get_epoch_base()
     result = (epoch - epoch_base) << 23
 
-    return [
-        (result | (shard_id << 10)) | ((start_id + i) % 1024)
-        for i in range(count)
-    ]
+    return [(result | (shard_id << 10)) | ((start_id + i) % 1024) for i in range(count)]

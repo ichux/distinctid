@@ -25,7 +25,7 @@ class TestCounterWraparound(unittest.TestCase):
     """Test counter behavior at 1024 boundary."""
 
     def setUp(self) -> None:
-        self.test_redis_key = 'distinctid:test:wraparound'
+        self.test_redis_key = "distinctid:test:wraparound"
         distinctid.disable_buffering()
 
         try:
@@ -51,7 +51,7 @@ class TestCounterWraparound(unittest.TestCase):
 
         # Verify IDs are incrementing (due to timestamp)
         for i in range(1, len(ids)):
-            self.assertGreater(ids[i], ids[i-1])
+            self.assertGreater(ids[i], ids[i - 1])
 
     def test_batch_across_1024_boundary(self):
         """Test batch generation across 1024 counter boundary."""
@@ -70,7 +70,7 @@ class TestShardIdBoundaries(unittest.TestCase):
     """Test shard_id boundary conditions."""
 
     def setUp(self) -> None:
-        self.test_redis_key = 'distinctid:test:shard_boundary'
+        self.test_redis_key = "distinctid:test:shard_boundary"
         distinctid.disable_buffering()
 
         try:
@@ -118,7 +118,7 @@ class TestConcurrentAccess(unittest.TestCase):
     """Test concurrent access patterns."""
 
     def setUp(self) -> None:
-        self.test_redis_key = 'distinctid:test:concurrent'
+        self.test_redis_key = "distinctid:test:concurrent"
         distinctid.disable_buffering()
 
         try:
@@ -136,7 +136,9 @@ class TestConcurrentAccess(unittest.TestCase):
         def generate_ids(thread_id):
             thread_ids = []
             for _ in range(ids_per_thread):
-                id_val = distinctid.distinct(shard_id=thread_id % 5, redis_key=self.test_redis_key)
+                id_val = distinctid.distinct(
+                    shard_id=thread_id % 5, redis_key=self.test_redis_key
+                )
                 thread_ids.append(id_val)
             results.append(thread_ids)
 
@@ -189,7 +191,9 @@ class TestConcurrentAccess(unittest.TestCase):
             all_ids.extend(thread_results)
 
         # All should be unique
-        self.assertEqual(len(set(all_ids)), len(all_ids), "Duplicate IDs with buffering")
+        self.assertEqual(
+            len(set(all_ids)), len(all_ids), "Duplicate IDs with buffering"
+        )
 
         distinctid.disable_buffering()
 
@@ -203,7 +207,7 @@ class TestRedisFailures(unittest.TestCase):
     def test_connection_error_handling(self):
         """Test that ConnectionError is properly caught and raised as RuntimeError."""
         # Mock Redis client to raise ConnectionError
-        with mock.patch.object(distinctid, '_get_redis_client') as mock_client:
+        with mock.patch.object(distinctid, "_get_redis_client") as mock_client:
             mock_instance = mock.MagicMock()
             mock_instance.incr.side_effect = redis.ConnectionError("Connection refused")
             mock_client.return_value = mock_instance
@@ -215,7 +219,7 @@ class TestRedisFailures(unittest.TestCase):
 
     def test_timeout_error_handling(self):
         """Test that TimeoutError is properly caught and raised as RuntimeError."""
-        with mock.patch.object(distinctid, '_get_redis_client') as mock_client:
+        with mock.patch.object(distinctid, "_get_redis_client") as mock_client:
             mock_instance = mock.MagicMock()
             mock_instance.incr.side_effect = redis.TimeoutError("Timeout")
             mock_client.return_value = mock_instance
@@ -230,7 +234,7 @@ class TestBatchEdgeCases(unittest.TestCase):
     """Test edge cases for batch generation."""
 
     def setUp(self) -> None:
-        self.test_redis_key = 'distinctid:test:batch_edge'
+        self.test_redis_key = "distinctid:test:batch_edge"
 
         try:
             client = distinctid._get_redis_client()
@@ -247,7 +251,9 @@ class TestBatchEdgeCases(unittest.TestCase):
         """Test batch with large count."""
         # Large batch within 1024 limit
         count = 500
-        ids = distinctid.distinct_batch(count, shard_id=1, redis_key=self.test_redis_key)
+        ids = distinctid.distinct_batch(
+            count, shard_id=1, redis_key=self.test_redis_key
+        )
         self.assertEqual(len(ids), count)
         self.assertEqual(len(set(ids)), count)
 
@@ -266,7 +272,7 @@ class TestBufferingEdgeCases(unittest.TestCase):
     """Test edge cases for buffering."""
 
     def setUp(self) -> None:
-        self.test_redis_key = 'distinctid:test:buffer_edge'
+        self.test_redis_key = "distinctid:test:buffer_edge"
         distinctid.disable_buffering()
 
         try:
@@ -309,7 +315,7 @@ class TestPerformanceRegression(unittest.TestCase):
     """Performance regression tests."""
 
     def setUp(self) -> None:
-        self.test_redis_key = 'distinctid:test:perf'
+        self.test_redis_key = "distinctid:test:perf"
         distinctid.disable_buffering()
 
         try:
@@ -337,7 +343,9 @@ class TestPerformanceRegression(unittest.TestCase):
 
         # Batch approach
         start = time.perf_counter()
-        distinctid.distinct_batch(count, shard_id=1, redis_key=self.test_redis_key + ':batch')
+        distinctid.distinct_batch(
+            count, shard_id=1, redis_key=self.test_redis_key + ":batch"
+        )
         batch_duration = time.perf_counter() - start
 
         # Should complete in under 10ms
@@ -351,14 +359,14 @@ class TestPerformanceRegression(unittest.TestCase):
         distinctid.disable_buffering()
         start = time.perf_counter()
         for _ in range(count):
-            distinctid.distinct(shard_id=1, redis_key=self.test_redis_key + ':nobuf')
+            distinctid.distinct(shard_id=1, redis_key=self.test_redis_key + ":nobuf")
         no_buffer_duration = time.perf_counter() - start
 
         # With buffering
         distinctid.enable_buffering(buffer_size=count)
         start = time.perf_counter()
         for _ in range(count):
-            distinctid.distinct(shard_id=1, redis_key=self.test_redis_key + ':buf')
+            distinctid.distinct(shard_id=1, redis_key=self.test_redis_key + ":buf")
         buffer_duration = time.perf_counter() - start
 
         # Buffered should be faster
@@ -371,7 +379,7 @@ class TestIntegration(unittest.TestCase):
     """Integration tests combining multiple features."""
 
     def setUp(self) -> None:
-        self.test_redis_key = 'distinctid:test:integration'
+        self.test_redis_key = "distinctid:test:integration"
         distinctid.disable_buffering()
         distinctid.enable_metrics(False)
 
@@ -387,15 +395,21 @@ class TestIntegration(unittest.TestCase):
 
         # Individual calls
         for _ in range(10):
-            all_ids.append(distinctid.distinct(shard_id=1, redis_key=self.test_redis_key))
+            all_ids.append(
+                distinctid.distinct(shard_id=1, redis_key=self.test_redis_key)
+            )
 
         # Batch
-        all_ids.extend(distinctid.distinct_batch(10, shard_id=1, redis_key=self.test_redis_key))
+        all_ids.extend(
+            distinctid.distinct_batch(10, shard_id=1, redis_key=self.test_redis_key)
+        )
 
         # Buffered
         distinctid.enable_buffering(buffer_size=20)
         for _ in range(10):
-            all_ids.append(distinctid.distinct(shard_id=1, redis_key=self.test_redis_key))
+            all_ids.append(
+                distinctid.distinct(shard_id=1, redis_key=self.test_redis_key)
+            )
         distinctid.disable_buffering()
 
         # All should be unique
@@ -405,11 +419,7 @@ class TestIntegration(unittest.TestCase):
     def test_configuration_persistence(self):
         """Test that configuration changes persist."""
         # Configure Redis
-        distinctid.configure_redis(
-            host='localhost',
-            port=6379,
-            max_connections=25
-        )
+        distinctid.configure_redis(host="localhost", port=6379, max_connections=25)
 
         # Generate ID to verify config works
         id1 = distinctid.distinct(shard_id=1, redis_key=self.test_redis_key)
@@ -427,7 +437,7 @@ class TestAsyncEdgeCases(unittest.IsolatedAsyncioTestCase):
     """Edge cases for async functionality."""
 
     async def asyncSetUp(self) -> None:
-        self.test_redis_key = 'distinctid:test:async_edge'
+        self.test_redis_key = "distinctid:test:async_edge"
         distinctid._async_redis_client = None
 
         try:
@@ -466,9 +476,7 @@ class TestAsyncEdgeCases(unittest.IsolatedAsyncioTestCase):
         try:
             count = 500
             ids = await distinctid.distinct_batch_async(
-                count,
-                shard_id=1,
-                redis_key=self.test_redis_key
+                count, shard_id=1, redis_key=self.test_redis_key
             )
 
             self.assertEqual(len(ids), count)
@@ -497,11 +505,12 @@ class TestEpochCachingEdgeCases(unittest.TestCase):
         epoch_current = distinctid._get_epoch_base()
 
         # Mock year change
-        with mock.patch('distinctid.date') as mock_date:
+        with mock.patch("distinctid.date") as mock_date:
             mock_date.today.return_value.year = 2030
 
             from datetime import datetime as dt
-            with mock.patch('distinctid.datetime') as mock_datetime:
+
+            with mock.patch("distinctid.datetime") as mock_datetime:
                 mock_datetime.side_effect = lambda *args, **kw: dt(*args, **kw)
 
                 # Should recalculate
@@ -511,5 +520,5 @@ class TestEpochCachingEdgeCases(unittest.TestCase):
                 self.assertNotEqual(epoch_current, epoch_new)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
