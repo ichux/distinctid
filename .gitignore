@@ -1,6 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 .idea/
+venv/
 
 *.py[cod]
 *$py.class
@@ -24,5 +25,6 @@ gunicorn.sock
 
 dist/
 distinctid.egg-info/
+htmlcov/
 
 *.bin
