@@ -10,7 +10,7 @@ import redis
 from redis.sentinel import Sentinel
 
 __author__ = "Chukwudi Nwachukwu"
-version = "1.0.2"
+version = "1.0.5"
 
 URL = "https://github.com/ichux/distinctid"
 
